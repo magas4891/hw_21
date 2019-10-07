@@ -84,8 +84,8 @@ ON orders.hotel_code = hotels.code
 WHERE orders.arival_date > '2019-10-02'
 ORDER BY 3 DESC;
 
-сколько потратит каждый посетитель за проживание, по отелях
-SELECT guests.last_name, hotels.name, hotels.price * orders.days AS spend_money
+сколько потратит каждый посетитель за проживание
+SELECT DISTINCT guests.last_name, hotels.name, hotels.price * orders.days AS spend_money
 FROM guests INNER JOIN orders
 ON orders.guest_code = guests.code
 INNER JOIN hotels
@@ -98,3 +98,12 @@ ON guests.code = orders.guest_code
 INNER JOIN hotels
 ON orders.hotel_code = hotels.code
 WHERE guests.last_name = 'Haminguey';
+
+список посетителей, пенсионного возраста
+SELECT guests.last_name,
+guests.data_of_birth,
+CASE
+	WHEN guests.data_of_birth < '1960-10-07' THEN 'OLD'
+END AS age
+FROM guests
+WHERE age = 'OLD';
