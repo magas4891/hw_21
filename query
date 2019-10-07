@@ -1,0 +1,100 @@
+create table hotels (
+	code integer primary key,
+	name varchar(30),
+	stars integer,
+	rooms integer,
+	price integer);
+
+create table guests (
+	code integer primary key,
+	last_name varchar(50),
+	first_name varchar(50),
+	country varchar(50),
+	data_of_birth date);
+
+create table orders (
+	code integer primary key,
+	order_date date,
+	guest_code integer,
+	hotel_code integer,
+	arival_date date,
+	days integer);
+
+insert into hotels (code, name, stars, rooms, price)
+values (101, 'Ocean princess', 5, 210, 185);
+insert into hotels (code, name, stars, rooms, price)
+values (102, 'SenTrope Beach', 4, 180, 155);
+insert into hotels (code, name, stars, rooms, price)
+values (103, 'SeaGull', 4, 220, 170);
+insert into hotels (code, name, stars, rooms, price)
+values (104, 'Best Resort', 3, 150, 130);
+insert into hotels (code, name, stars, rooms, price)
+values (105, 'Makarena', 5, 250, 175);
+
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (201, 'Castro', 'Veronika', 'Jamayka', '1954-02-28');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (202, 'Bush', 'Gorg', 'USA', '1946-08-20');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (203, 'CheGevaro', 'Ernesto', 'Cuba', '1961-07-15');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (204, 'Cobain', 'Kurt', 'USA', '1967-02-20');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (205, 'Haminguey', 'Ernesto', 'England', '1880-08-16');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (206, 'Hitler', 'Addolf', 'Germany', '1916-01-22');
+insert into guests (code, last_name, first_name, country, data_of_birth)
+values (207, 'Zelensky', 'Vladimir', 'Ukraine', '1979-07-08');
+
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (301, '2019-06-15', 202, 101, '2019-07-28', 21);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (302, '2019-05-11', 201, 103, '2019-08-15', 15);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (303, '2019-07-18', 205, 103, '2019-08-02', 10);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (304, '2019-08-05', 203, 104, '2019-09-12', 11);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (305, '2019-07-14', 207, 105, '2019-06-11', 15);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (306, '2019-08-20', 206, 102, '2019-07-12', 12);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (307, '2019-09-11', 205, 104, '2019-10-11', 14);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (308, '2019-08-15', 207, 101, '2019-11-12', 15);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (309, '2019-05-11', 202, 102, '2019-08-15', 21);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (310, '2019-09-18', 202, 102, '2019-10-17', 09);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (311, '2019-08-05', 207, 101, '2019-12-12', 18);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (312, '2019-06-04', 201, 104, '2019-07-22', 05);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (313, '2019-08-25', 205, 103, '2019-08-24', 22);
+insert into orders (code, order_date, guest_code, hotel_code, arival_date, days)
+values (314, '2019-09-11', 204, 101, '2019-10-11', 14);
+
+посетители, которые еще не останавливались
+SELECT guests.last_name AS LName, guests.first_name AS FName, orders.arival_date AS ArivalD, hotels.name AS Hotel
+FROM guests INNER JOIN orders
+ON orders.guest_code = guests.code
+INNER JOIN hotels
+ON orders.hotel_code = hotels.code
+WHERE orders.arival_date > '2019-10-02'
+ORDER BY 3 DESC;
+
+сколько потратит каждый посетитель за проживание, по отелях
+SELECT guests.last_name, hotels.name, hotels.price * orders.days AS spend_money
+FROM guests INNER JOIN orders
+ON orders.guest_code = guests.code
+INNER JOIN hotels
+ON orders.hotel_code = hotels.code;
+
+Сколько указаный человек останавливался и в каких отелях
+SELECT guests.last_name, hotels.name,hotels.price * orders.days
+FROM guests INNER JOIN orders
+ON guests.code = orders.guest_code
+INNER JOIN hotels
+ON orders.hotel_code = hotels.code
+WHERE guests.last_name = 'Haminguey';
